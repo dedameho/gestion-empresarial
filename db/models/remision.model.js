@@ -13,19 +13,24 @@ Remision.init({
         type: DataTypes.DATE,
         allowNull: false
     },
-    clienteId: {
+    cotizacionId: {
         type: DataTypes.INTEGER,
     },
-    ordenCompraId: {
-        type: DataTypes.INTEGER,
+    ordenCompra:{
+        type: DataTypes.STRING,
     },
     estado: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue:'Pendiente por firma'
     }
 }, {
     sequelize: connection,
     modelName: 'Remision',
     tableName: 'Remisiones',
-    timestamps: false
+    timestamps: false,
+    indexes:[{
+        unique: true,
+        fields: ['cotizacionId']
+    }]
 });

@@ -17,6 +17,7 @@
     "joi": "^17.13.3",
     "morgan": "^1.10.0",
     "mysql2": "^3.10.1",
+    "pdfkit": "^0.15.0",
     "sequelize": "^6.37.3"
   },
   "type": "module",

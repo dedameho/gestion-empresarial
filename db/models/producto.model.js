@@ -33,5 +33,11 @@ Producto.init({
     sequelize: connection,
     modelName: 'Producto',
     tableName: 'Productos',
-    timestamps: false
+    timestamps: false,
+    indexes:[
+        {
+            fields:['codigo'],
+            unique:true
+        }
+    ]
 });
