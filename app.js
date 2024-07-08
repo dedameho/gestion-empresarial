@@ -10,6 +10,7 @@ import { errorHandler } from './utils/errorHandler.middleware.js'
 import { ProductoRouter } from './routes/producto.route.js'
 import { ClienteRouter } from './routes/cliente.route.js'
 import { CotizacionRouter } from './routes/cotizacion.route.js'
+import { RemisionRouter } from './routes/remision.route.js'
 const log = debug('app:main')
 const app = express()
 
@@ -25,7 +26,7 @@ app.use(cors({
 app.use(ProductoRouter)
 app.use(ClienteRouter)
 app.use(CotizacionRouter)
-
+app.use(RemisionRouter)
 
 //Middleware de manejo de errores
 app.use(errorHandler)

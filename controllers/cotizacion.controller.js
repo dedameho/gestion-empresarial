@@ -59,7 +59,9 @@ export class CotizacionController {
             }
 
             if (estado && estado != 'null') {
-                filters.estado = estado;
+                filters.estado = {
+                    [Op.like]: `%${estado}%`
+                };
             }
 
             if (fechaInicio && fechaFin && (fechaInicio !='null' && fechaFin !='null')) {
@@ -91,7 +93,9 @@ export class CotizacionController {
             }
 
             if (codigo && codigo != 'null') {
-                filters.codigo = codigo;
+                filters.codigo = {
+                    [Op.like]: `%${codigo}%`
+                };
             }
             const cotizaciones = await Cotizacion.findAll({
                 where: filters,
@@ -159,11 +163,10 @@ export class CotizacionController {
                     include: [{ model: DetalleCotizacion }],
                     transaction: t
                 });
-                const budget = await CotizacionController.getBudget(updatedBudget.id)
-                generatePDF(budget)
                 return updatedCotizacion;
             });
-
+            const budget = await CotizacionController.getBudget(updatedBudget.id)
+            generatePDF(budget)
             res.send(updatedBudget);
         } catch (error) {
             console.error(error);

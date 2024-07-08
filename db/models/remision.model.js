@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize'
 import { connection } from '../connection.js'
 
-export class Remision extends Model {}
+export class Remision extends Model { }
 
 Remision.init({
     id: {
@@ -11,26 +11,48 @@ Remision.init({
     },
     fecha: {
         type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
         allowNull: false
     },
     cotizacionId: {
         type: DataTypes.INTEGER,
+        allowNull: false
     },
-    ordenCompra:{
+    codigo: {
         type: DataTypes.STRING,
+    },
+    ordenCompra: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     estado: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue:'Pendiente por firma'
+        defaultValue: 'Pendiente por firma'
     }
 }, {
     sequelize: connection,
     modelName: 'Remision',
     tableName: 'Remisiones',
     timestamps: false,
-    indexes:[{
+    indexes: [{
         unique: true,
         fields: ['cotizacionId']
-    }]
+    },
+    {
+        unique: true,
+        fields: ['codigo']
+    },
+    {
+        unique: true,
+        fields: ['ordenCompra']
+    }],
+    hooks: {
+        beforeCreate: async (remision, options) => {
+            const year = new Date().getFullYear();
+            const count = await Remision.count();
+            const consecutivo = count + 1;
+            remision.codigo = `INNC-${consecutivo}-${year}`;
+        }
+    }
 });
