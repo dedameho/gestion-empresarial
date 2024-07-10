@@ -50,8 +50,10 @@ Remision.init({
     hooks: {
         beforeCreate: async (remision, options) => {
             const year = new Date().getFullYear();
-            const count = await Remision.count();
-            const consecutivo = count + 1;
+            const count = await Remision.findOne({
+                order:[['id','DESC']]
+            });
+            const consecutivo = count.id + 1;
             remision.codigo = `INNC-${consecutivo}-${year}`;
         }
     }

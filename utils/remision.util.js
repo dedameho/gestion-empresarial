@@ -55,19 +55,19 @@ export const generatePDF = (data) => {
     doc.rect(50, 295, 500, 20).stroke()
         .fillColor('#000')
 
-    let y = 320;
+    let y = 315;
     data.Cotizacion.DetalleCotizacions.forEach((detalle) => {
         const descripcion = detalle.Producto.descripcion;
         const descripcionHeight = doc.heightOfString(descripcion, { width: 300 });
         const rowHeight = Math.max(20, descripcionHeight + 10);
 
-        doc.rect(50, y - 5, 500, rowHeight).stroke()
+        doc.rect(50, y, 500, rowHeight).stroke()
             .fillColor('#000')
-        doc.text(detalle.cantidad, 50, y, { width: 70, align: 'center' });
-        doc.text(`${detalle.Producto.nombre}`, 120, y, { width: 230 });
-        doc.text('-', 350, y, { width: 100, align: 'center' });
-        doc.text('-', 450, y, { width: 100, align: 'center' });
-        y += 20;
+        doc.text(detalle.cantidad, 50, y+5, { width: 70, align: 'center' });
+        doc.text(`${detalle.Producto.nombre}`, 120, y+5, { width: 230 });
+        doc.text('-', 350, y+5, { width: 100, align: 'center' });
+        doc.text('-', 450, y+5, { width: 100, align: 'center' });
+        y += 22;
     });
 
     // Subtotales y totales
@@ -96,7 +96,7 @@ export const generatePDF = (data) => {
         doc.rect(50, y, 500, rowHeight).stroke()
             .fillColor('#000')
         doc.text(`${detalle.Producto.descripcion}`, 52, y + 3);
-        y += 20;
+        y += 22;
     });
 
 

@@ -62,7 +62,7 @@ export class RemisionController {
             generatePDF(completeRemision)
             res.send(remisionCreated)
         } catch (error) {
-            log(error)
+            console.log(error)
             next(error)
         }
     }
@@ -88,6 +88,37 @@ export class RemisionController {
             ]
         })
         return remision
+    }
+
+    static async getRemisionByBudgetId(req = request, res = response, next) {
+        try {
+            const { cotizacionId } = req.params
+            const remision = await Remision.findOne({
+                where: {
+                    cotizacionId: cotizacionId
+                }
+            })
+            res.send(remision)
+        } catch (error) {
+            log(error)
+            next(error)
+        }
+    }
+
+    static async updateRemisionPDF(req = request, res = response, next) {
+        try {
+            const { remisionId } = req.params
+            const remision = await Remision.findOne({
+                where: { id: remisionId }
+            })
+            if (!remision) throw new ErrorResponse('Remisión no encontrada', 404)
+            const completeRemision = await RemisionController.getRemision(remisionId)
+            generatePDF(completeRemision)
+            res.end()
+        } catch (error) {
+            log(error)
+            next(error)
+        }
     }
 
     static async getRemisionById(req = request, res = response, next) {
@@ -121,6 +152,39 @@ export class RemisionController {
             const { remisionId } = req.params
             const pdfPath = path.join(__dirname, '../files', `${remisionId}.pdf`)
             res.sendFile(pdfPath)
+        } catch (error) {
+            log(error)
+            next(error)
+        }
+    }
+
+    static async signRemision(req = request, res = response, next) {
+        try {
+            const { id } = req.params
+            console.log(id)
+            const remision = await Remision.findOne({
+                where: {
+                    id: id
+                }
+            })
+            if (!remision) throw new ErrorResponse('Remisión no encontrada', 404)
+            await remision.update({
+                estado: 'Firmada'
+            })
+            res.end()
+        } catch (error) {
+            log(error)
+            next(error)
+        }
+    }
+
+    static async deleteRemision(req = request, res = response, next) {
+        try {
+            const { id } = req.params
+            const remision = await Remision.findOne({ where: { id: id } })
+            if (!remision) throw new ErrorResponse('Remisión no encontrada', 404)
+            await remision.destroy()
+            res.end()
         } catch (error) {
             log(error)
             next(error)

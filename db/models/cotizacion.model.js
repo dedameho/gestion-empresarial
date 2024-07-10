@@ -51,8 +51,10 @@ Cotizacion.init({
     hooks: {
         beforeCreate: async (cotizacion, options) => {
             const year = new Date().getFullYear();
-            const count = await Cotizacion.count();
-            const consecutivo = count + 1;
+            const count = await Cotizacion.findOne({
+                order:[['id','DESC']]
+            });
+            const consecutivo = count.id + 1;
             cotizacion.codigo = `COT${year}${consecutivo}`;
         }
     }
